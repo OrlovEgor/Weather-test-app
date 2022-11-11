@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentChoiceCity"
-        android:name="ru.orlovegor.weather.FragmentChoiceCity"
+        android:name="ru.orlovegor.weather.presentation.FragmentChoiceCity"
         android:label="FragmentChoiceCity"
         tools:layout="@layout/fragment_choise_city">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentWeather"
-        android:name="ru.orlovegor.weather.FragmentWeather"
+        android:name="ru.orlovegor.weather.presentation.FragmentWeather"
         android:label="FragmentWeather"
         tools:layout="@layout/fragment_weather">
         <argument

@@ -1,4 +1,4 @@
-package ru.orlovegor.weather
+package ru.orlovegor.weather.presentation
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
+import ru.orlovegor.weather.R
 import ru.orlovegor.weather.databinding.FragmentWeatherBinding
 
 class FragmentWeather : Fragment(R.layout.fragment_weather) {
