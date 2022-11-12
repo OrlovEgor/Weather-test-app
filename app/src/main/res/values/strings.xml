@@ -12,4 +12,6 @@
     <string name="Ufa">Уфа</string>
     <string name="Tula">Тула</string>
     <string name="Anapa">Анапа</string>
+    <string name="network_error">Ошибка подключения к сети.</string>
+    <string name="error">Неизвестная ошибка.</string>
 </resources>
