@@ -2,7 +2,6 @@ package ru.orlovegor.weather.presentation.weather
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
