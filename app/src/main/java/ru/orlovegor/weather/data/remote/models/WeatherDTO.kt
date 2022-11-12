@@ -1,4 +1,4 @@
-package ru.orlovegor.weather.data.remote
+package ru.orlovegor.weather.data.remote.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -10,6 +10,13 @@ data class Weather(
     @Json(name = "forecast")
     val forecast: Forecast
 )
+
+@JsonClass(generateAdapter = true)
+data class Location(
+    @Json(name = "name")
+    val city: String
+)
+
 @JsonClass(generateAdapter = true)
 data class Forecast(
     @Json(name = "forecastday")
@@ -26,6 +33,8 @@ data class ForecastHour(
     val time: String,
     @Json(name = "temp_c")
     val temperature : String,
+    @Json(name = "is_day")
+    val isDay: Int,
     @Json(name = "condition")
     val condition: Condition
 )
@@ -36,10 +45,6 @@ data class Condition(
     @Json(name = "icon")
     val iconUrl: String,
     @Json(name = "code")
-    val code: String
+    val code: Int
 )
-@JsonClass(generateAdapter = true)
-data class Location(
-    @Json(name = "name")
-    val city: String
-)
+

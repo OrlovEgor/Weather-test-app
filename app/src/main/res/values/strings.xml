@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Weather</string>
+    <string name="show_weather">Показать погоду</string>
+    <string name="city">Город</string>
+    <string name="Moscow">Москва</string>
+    <string name="Vologda">Вологда</string>
+    <string name="Cherepovets">Череповец</string>
+    <string name="Vladivostok">Владивосток</string>
+    <string name="Salekhard">Салехард</string>
+    <string name="Samara">Самара</string>
+    <string name="Ryazan">Рязань</string>
+    <string name="Ufa">Уфа</string>
+    <string name="Tula">Тула</string>
+    <string name="Anapa">Анапа</string>
 </resources>

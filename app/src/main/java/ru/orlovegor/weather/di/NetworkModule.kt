@@ -1,6 +1,7 @@
 package ru.orlovegor.weather.di
 
 import android.content.Context
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +15,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.orlovegor.weather.data.remote.ConnectionInterceptor
 import ru.orlovegor.weather.data.remote.QueryHeader
 import ru.orlovegor.weather.data.remote.WeatherApi
+import ru.orlovegor.weather.utils.ForecastDayJsonAdapter
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -39,11 +41,16 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun porovideMoshi() = Moshi.Builder().add(ForecastDayJsonAdapter()).build()
+
+    @Provides
+    @Singleton
     fun provideRetrofit(
         okhttp: OkHttpClient,
+        moshi: Moshi
     ): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .client(okhttp)
         .build()
 

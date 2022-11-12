@@ -6,9 +6,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
 import ru.orlovegor.weather.R
 import ru.orlovegor.weather.databinding.FragmentWeatherBinding
 
+@AndroidEntryPoint
 class FragmentWeather : Fragment(R.layout.fragment_weather) {
 
     private val binding: FragmentWeatherBinding by viewBinding()

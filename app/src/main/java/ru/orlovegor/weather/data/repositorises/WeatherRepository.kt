@@ -1,4 +1,9 @@
 package ru.orlovegor.weather.data.repositorises
 
+import ru.orlovegor.weather.presentation.models.HourlyWeather
+import ru.orlovegor.weather.utils.ResultWrapper
+
 interface WeatherRepository {
+
+    suspend fun fetchWeatherByCity(city: String)
 }
