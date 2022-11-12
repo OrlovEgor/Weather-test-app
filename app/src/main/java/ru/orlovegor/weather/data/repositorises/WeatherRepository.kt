@@ -5,5 +5,5 @@ import ru.orlovegor.weather.utils.ResultWrapper
 
 interface WeatherRepository {
 
-    suspend fun fetchWeatherByCity(city: String)
+    suspend fun fetchWeatherByCity(city: String): ResultWrapper<List<HourlyWeather>>
 }
