@@ -15,10 +15,11 @@ class ForecastDayJsonAdapter {
     @WrappedForecastHourList
     @FromJson
     fun fromJson(weather: Weather): List<ForecastHour> {
-       return weather.forecast.forecastDay.first().hour
+        return weather.forecast.forecastDay.first().hour
     }
 
-    @ToJson fun toJson(@WrappedForecastHourList value : List<ForecastHour>): Weather{
+    @ToJson
+    fun toJson(@WrappedForecastHourList value: List<ForecastHour>): Weather {
         throw UnsupportedOperationException()
     }
 

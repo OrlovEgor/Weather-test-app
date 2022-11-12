@@ -41,7 +41,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun porovideMoshi() = Moshi.Builder().add(ForecastDayJsonAdapter()).build()
+    fun provideMoshi(): Moshi = Moshi.Builder().add(ForecastDayJsonAdapter()).build()
 
     @Provides
     @Singleton

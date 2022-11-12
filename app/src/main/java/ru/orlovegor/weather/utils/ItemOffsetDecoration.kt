@@ -15,6 +15,7 @@ class ItemOffsetDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
+
         val offset = 8.fromDpToPixels(context)
         with(outRect) {
             left = offset

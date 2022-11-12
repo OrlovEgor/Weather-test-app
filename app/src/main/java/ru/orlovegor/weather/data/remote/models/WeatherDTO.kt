@@ -22,11 +22,13 @@ data class Forecast(
     @Json(name = "forecastday")
     val forecastDay: List<ForecastDay>
 )
+
 @JsonClass(generateAdapter = true)
 data class ForecastDay(
     @Json(name = "hour")
     val hour : List<ForecastHour>
 )
+
 @JsonClass(generateAdapter = true)
 data class ForecastHour(
     @Json(name = "time")
@@ -38,6 +40,7 @@ data class ForecastHour(
     @Json(name = "condition")
     val condition: Condition
 )
+
 @JsonClass(generateAdapter = true)
 data class Condition(
     @Json(name = "text")

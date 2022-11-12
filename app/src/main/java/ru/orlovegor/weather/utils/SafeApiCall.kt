@@ -11,6 +11,5 @@ suspend fun <T> safeApiCall(call: suspend () -> T): ResultWrapper<T> {
     } catch (t: Throwable) {
         ResultWrapper.Error(t.message.orEmpty())
     }
-
 }
 

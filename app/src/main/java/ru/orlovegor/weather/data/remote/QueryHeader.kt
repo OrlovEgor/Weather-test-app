@@ -21,5 +21,4 @@ class QueryHeader(
                 .build()
         return chain.proceed(modifiedRequest)
     }
-
 }

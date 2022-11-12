@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.orlovegor.weather.R
 import ru.orlovegor.weather.databinding.ItemWeatherByTimeBinding
-import ru.orlovegor.weather.presentation.models.HourlyWeather
+import ru.orlovegor.weather.presentation.models.WeatherPerHour
 import ru.orlovegor.weather.utils.IconWeather
 
 class WeatherAdapter :
-    ListAdapter<HourlyWeather, WeatherAdapter.HourlyWeatherViewHolder>(HourlyWeatherItemCallback()) {
+    ListAdapter<WeatherPerHour, WeatherAdapter.HourlyWeatherViewHolder>(HourlyWeatherItemCallback()) {
 
-    private class HourlyWeatherItemCallback : DiffUtil.ItemCallback<HourlyWeather>() {
-        override fun areItemsTheSame(oldItem: HourlyWeather, newItem: HourlyWeather): Boolean {
+    private class HourlyWeatherItemCallback : DiffUtil.ItemCallback<WeatherPerHour>() {
+        override fun areItemsTheSame(oldItem: WeatherPerHour, newItem: WeatherPerHour): Boolean {
             return oldItem.time == newItem.time
         }
 
-        override fun areContentsTheSame(oldItem: HourlyWeather, newItem: HourlyWeather): Boolean {
+        override fun areContentsTheSame(oldItem: WeatherPerHour, newItem: WeatherPerHour): Boolean {
             return oldItem == newItem
         }
     }
@@ -28,13 +28,13 @@ class WeatherAdapter :
     class HourlyWeatherViewHolder(
         private val binding: ItemWeatherByTimeBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(hourlyWeather: HourlyWeather) {
-            val iconWeather = IconWeather.values().find { iconWeather -> iconWeather.code == hourlyWeather.iconCode }
-            val currentIcon = if (hourlyWeather.isDay) iconWeather?.iconDay else iconWeather?.iconNight
+        fun bind(weatherPerHour: WeatherPerHour) {
+            val iconWeather = IconWeather.values().find { iconWeather -> iconWeather.code == weatherPerHour.iconCode }
+            val currentIcon = if (weatherPerHour.isDay) iconWeather?.iconDay else iconWeather?.iconNight
 
             with(binding) {
-                textTime.text = hourlyWeather.time
-                textTemperature.text = hourlyWeather.temperature
+                textTime.text = weatherPerHour.time
+                textTemperature.text = weatherPerHour.temperature
                 Glide.with(itemView)
                     .load(currentIcon)
                     .error(R.drawable.ic_error_outline_64)

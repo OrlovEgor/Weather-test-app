@@ -8,7 +8,6 @@ enum class Cities(
     @StringRes
     val displayName: Int
 ) {
-
     MOSCOW("Moscow", R.string.Moscow),
     VOLOGDA("Vologda", R.string.Vologda),
     CHEREPOVETS("Cherepovets", R.string.Cherepovets),
@@ -19,5 +18,4 @@ enum class Cities(
     UFA("Ufa", R.string.Ufa),
     TULA("Tula", R.string.Tula),
     ANAPA("Anapa", R.string.Anapa)
-
 }
