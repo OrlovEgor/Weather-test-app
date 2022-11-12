@@ -1,4 +1,4 @@
-package ru.orlovegor.weather.presentation
+package ru.orlovegor.weather.presentation.weather
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
