@@ -7,9 +7,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.orlovegor.weather.R
+import ru.orlovegor.weather.data.local.entity.LocalCity
 import ru.orlovegor.weather.data.repositorises.WeatherRepository
 import ru.orlovegor.weather.presentation.models.WeatherPerHour
 import ru.orlovegor.weather.utils.ResultWrapper
+import ru.orlovegor.weather.utils.dateToDateString
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,6 +20,9 @@ class WeatherViewModel @Inject constructor(
         private val stateNavArgs: SavedStateHandle,
         private val weatherRepository: WeatherRepository
 ) : ViewModel() {
+
+        private val cityId: Long
+                get() = stateNavArgs.get<Long>(NAV_ARG_KEY_CITY_ID) ?: 0
 
         private val _city = MutableSharedFlow<String>()
         private val _weather = MutableStateFlow(listOf<WeatherPerHour>())
@@ -34,26 +40,36 @@ class WeatherViewModel @Inject constructor(
         }
 
         private fun load() {
-                _city.onEach {
+                _city.onEach { tittleCity ->
                         _isProgress.value = true
-                                when (val data = weatherRepository.fetchWeatherByCity(it)) {
-                                        is ResultWrapper.Success -> {
-                                                _weather.emit(data.value)
-                                        }
-                                        is ResultWrapper.NetworkError -> {
-                                                _toast.emit(R.string.network_error)
-                                        }
-                                        is ResultWrapper.Error -> {
-                                                _toast.emit(R.string.error)
-                                        }
+                        when (val data = weatherRepository.fetchWeatherByCity(tittleCity)) {
+                                is ResultWrapper.Success -> {
+                                        _weather.emit(data.value)
+                                        weatherRepository.saveDataStrategy(
+                                                city = LocalCity(cityId, tittleCity, getCurrentDate()),
+                                                weathersPerHour = data.value
+                                        )
+                                }
+                                is ResultWrapper.NetworkError -> {
+                                        _weather.value = weatherRepository.loadDataStrategy(
+                                                        cityId,
+                                                        getCurrentDate()
+                                                )
+                                        _toast.emit(R.string.network_error)
+                                }
+                                is ResultWrapper.Error -> {
+                                        _toast.emit(R.string.error)
                                 }
                         }
+                }
                         .onEach { _isProgress.value = false }
                         .launchIn(viewModelScope)
-
         }
+
+        private fun getCurrentDate() = Calendar.getInstance().time.dateToDateString()
 
         companion object {
                 const val NAV_ARG_KEY_CITY = "city"
+                const val NAV_ARG_KEY_CITY_ID = "cityId"
         }
 }

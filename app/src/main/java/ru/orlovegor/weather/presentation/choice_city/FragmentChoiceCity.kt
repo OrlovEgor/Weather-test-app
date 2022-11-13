@@ -40,17 +40,18 @@ class FragmentChoiceCity : Fragment(R.layout.fragment_choise_city) {
 
     private fun navigate() {
         binding.showWeatherButton.setOnClickListener {
+            val city = getCity(binding.textInputCity.editText?.text.toString())
             findNavController().navigate(
                 FragmentChoiceCityDirections.actionFragmentChoiceCityToFragmentWeather(
-                    getQueryRequestString(binding.textInputCity.editText?.text.toString() )
+                    city?.requestName.orEmpty(),
+                    city?.id ?: 0
                 )
             )
         }
     }
 
-    private fun getQueryRequestString(text: String): String{
-        return Cities.values().find { requireContext().getString(it.displayName) == text }?.requestName.orEmpty()
-    }
+    private fun getCity(text: String) =
+         Cities.values().find { requireContext().getString(it.displayName) == text }
 
     private fun changeButtonVisibility(isEmpty: Boolean) {
         binding.showWeatherButton.isEnabled = !isEmpty
