@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package ru.orlovegor.weather.di
 
 import dagger.Binds

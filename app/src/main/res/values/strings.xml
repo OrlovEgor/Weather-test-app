@@ -14,4 +14,6 @@
     <string name="Anapa">Анапа</string>
     <string name="network_error">Ошибка подключения к сети.</string>
     <string name="error">Неизвестная ошибка.</string>
+    <string name="textview">TextView</string>
+    <string name="weather_today">Погода cегодня</string>
 </resources>
