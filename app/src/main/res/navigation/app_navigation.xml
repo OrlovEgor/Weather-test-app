@@ -22,5 +22,8 @@
         <argument
             android:name="city"
             app:argType="string" />
+        <argument
+            android:name="cityId"
+            app:argType="long" />
     </fragment>
 </navigation>
