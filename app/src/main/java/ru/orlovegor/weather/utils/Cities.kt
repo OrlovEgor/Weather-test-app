@@ -4,18 +4,19 @@ import androidx.annotation.StringRes
 import ru.orlovegor.weather.R
 
 enum class Cities(
+    val id: Long,
     val requestName: String,
     @StringRes
     val displayName: Int
 ) {
-    MOSCOW("Moscow", R.string.Moscow),
-    VOLOGDA("Vologda", R.string.Vologda),
-    CHEREPOVETS("Cherepovets", R.string.Cherepovets),
-    VLADIVOSTOK("Vladivostok", R.string.Vladivostok),
-    SALEKHARD("Salekhard", R.string.Salekhard),
-    SAMARA("Samara", R.string.Samara),
-    RYAZAN("Ryazan", R.string.Ryazan),
-    UFA("Ufa", R.string.Ufa),
-    TULA("Tula", R.string.Tula),
-    ANAPA("Anapa", R.string.Anapa)
+    MOSCOW(100, "Moscow", R.string.Moscow),
+    VOLOGDA(101, "Vologda", R.string.Vologda),
+    CHEREPOVETS(102, "Cherepovets", R.string.Cherepovets),
+    VLADIVOSTOK(103, "Vladivostok", R.string.Vladivostok),
+    SALEKHARD(104, "Salekhard", R.string.Salekhard),
+    SAMARA(105, "Samara", R.string.Samara),
+    RYAZAN(106, "Ryazan", R.string.Ryazan),
+    UFA(107, "Ufa", R.string.Ufa),
+    TULA(108, "Tula", R.string.Tula),
+    ANAPA(109, "Anapa", R.string.Anapa)
 }
