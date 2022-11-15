@@ -14,7 +14,7 @@ import ru.orlovegor.weather.databinding.FragmentChoiseCityBinding
 import ru.orlovegor.weather.utils.Cities
 
 @AndroidEntryPoint
-class FragmentChoiceCity : Fragment(R.layout.fragment_choise_city) {
+class ChoiceCityFragment : Fragment(R.layout.fragment_choise_city) {
 
     private val binding: FragmentChoiseCityBinding by viewBinding()
 
@@ -42,7 +42,7 @@ class FragmentChoiceCity : Fragment(R.layout.fragment_choise_city) {
         binding.showWeatherButton.setOnClickListener {
             val city = getCity(binding.textInputCity.editText?.text.toString())
             findNavController().navigate(
-                FragmentChoiceCityDirections.actionFragmentChoiceCityToFragmentWeather(
+                ChoiceCityFragmentDirections.actionFragmentChoiceCityToFragmentWeather(
                     city?.requestName.orEmpty(),
                     city?.id ?: 0
                 )

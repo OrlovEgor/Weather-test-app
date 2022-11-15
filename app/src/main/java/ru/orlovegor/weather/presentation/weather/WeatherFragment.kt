@@ -17,7 +17,7 @@ import ru.orlovegor.weather.utils.ItemOffsetDecoration
 import ru.orlovegor.weather.utils.makeToast
 
 @AndroidEntryPoint
-class FragmentWeather : Fragment(R.layout.fragment_weather) {
+class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private val binding: FragmentWeatherBinding by viewBinding()
     private val viewModel: WeatherViewModel by viewModels()
