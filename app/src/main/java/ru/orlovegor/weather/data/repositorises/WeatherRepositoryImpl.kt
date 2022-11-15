@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import ru.orlovegor.weather.data.local.dao.CityDao
 import ru.orlovegor.weather.data.local.dao.WeatherPerHourDao
@@ -95,6 +96,13 @@ class WeatherRepositoryImpl @Inject constructor(
            databaseQuery = {loadDataStrategy2(localCity.cityId,localCity.lastDateUpdate).map { it.mapToWeatherPerHour() }}
         )
     }
+   override fun getOperation2(localCity: LocalCity) = strategy2(
+        networkCall = {weatherApi.getWeatherByCity(localCity.title).map { it.mapToWeatherPerHour() }},
+        saveCallResult = {  it -> saveDataStrategy2(it, localCity) },
+        databaseQuery = {loadDataStrategy2(localCity.cityId,localCity.lastDateUpdate).map { it.mapToWeatherPerHour() }},
+       coroutineDispatcher = dispatcher
+    )
+
 
     suspend fun<T> strategy (
         networkCall: suspend () -> T,
@@ -115,26 +123,28 @@ class WeatherRepositoryImpl @Inject constructor(
         }
     }
 
-    suspend fun<T> strategy2 (
+    override fun<T> strategy2 (
         networkCall: suspend () -> T,
-        saveCallResult: suspend () -> Unit,
-        databaseQuery: suspend () -> T
+        saveCallResult: suspend (T) -> Unit,
+        databaseQuery: suspend () -> T,
+        coroutineDispatcher: CoroutineDispatcher
     ): Flow<UIState<T>> = flow<UIState<T>> {
-        try {
-            val loadData = networkCall.invoke()
-            saveCallResult.invoke()
-           emit(UIState.Success(loadData))
-        } catch (i: IOException) {
             try {
-                val databaseData = databaseQuery.invoke()
-               emit( UIState.NetworkError(i.message.toString(), databaseData))
-            } catch (t: Throwable){
-                emit(UIState.Error(t.message.toString()))
+                val loadData = networkCall.invoke()
+                saveCallResult.invoke(loadData)
+                emit(UIState.Success(loadData))
+            } catch (i: IOException) {
+                try {
+                    val databaseData = databaseQuery.invoke()
+                    emit(UIState.NetworkError(i.message.toString(), databaseData))
+                } catch (t: Throwable) {
+                    emit(UIState.Error(t.message.toString()))
+                }
             }
-        }
+    }.flowOn(coroutineDispatcher)
+
     }
 
 
 
-}
 

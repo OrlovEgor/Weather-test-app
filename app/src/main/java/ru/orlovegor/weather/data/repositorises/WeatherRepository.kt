@@ -1,5 +1,7 @@
 package ru.orlovegor.weather.data.repositorises
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import ru.orlovegor.weather.data.local.entity.LocalCity
 import ru.orlovegor.weather.data.local.entity.LocalWeatherPerHour
 import ru.orlovegor.weather.presentation.models.WeatherPerHour
@@ -21,5 +23,15 @@ interface WeatherRepository {
 
     suspend fun saveDataStrategy2(forecastHour: List<WeatherPerHour>,city: LocalCity)
     suspend fun getOperation(localCity: LocalCity): UIState<List<WeatherPerHour>>
+
+     fun<T> strategy2 (
+        networkCall: suspend () -> T,
+        saveCallResult: suspend (T) -> Unit,
+        databaseQuery: suspend () -> T,
+        coroutineDispatcher: CoroutineDispatcher
+    ): Flow<UIState<T>>
+
+    fun getOperation2(localCity: LocalCity): Flow<UIState<List<WeatherPerHour>>>
+
 
 }

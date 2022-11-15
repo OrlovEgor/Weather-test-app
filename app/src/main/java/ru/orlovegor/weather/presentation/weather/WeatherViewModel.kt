@@ -25,25 +25,27 @@ class WeatherViewModel @Inject constructor(
 
         private val cityId: Long
                 get() = stateNavArgs.get<Long>(NAV_ARG_KEY_CITY_ID) ?: 0
+        private val titleCity: String
+        get() = stateNavArgs.get<String>(NAV_ARG_KEY_CITY)?: ""
 
         private val _city = MutableSharedFlow<String>()
         private val _weather = MutableStateFlow(listOf<WeatherPerHour>())
-        private val _uiWeather = MutableSharedFlow<UIState<List<WeatherPerHour>>>()
+        private val _uiWeather = weatherRepository.getOperation2(LocalCity(cityId, titleCity , getCurrentDate()))
         private val _isProgress = MutableStateFlow(false)
         private val _toast = MutableSharedFlow<Int>()
-        val uiWeather = _uiWeather.asSharedFlow()
+        val uiWeather = _uiWeather.shareIn(viewModelScope, SharingStarted.Lazily)
         val weather = _weather.asStateFlow()
         val isProgress = _isProgress.asStateFlow()
         val toast = _toast.asSharedFlow()
 
         init {
-                load2()
+                //load2()
                 viewModelScope.launch {
                         stateNavArgs.get<String>(NAV_ARG_KEY_CITY)?.let { _city.emit(it) }
                 }
         }
 
-        private fun load2(){
+        /*private fun load2(){
                 _city.onEach {
                         tittleCity ->
                         _isProgress.value = true
@@ -51,7 +53,7 @@ class WeatherViewModel @Inject constructor(
                 }
                         .onEach { _isProgress.value = false }
                         .launchIn(viewModelScope)
-        }
+        }*/
 
         private fun load() {
                 _city.onEach { tittleCity ->
