@@ -10,7 +10,7 @@ import ru.orlovegor.weather.R
 import ru.orlovegor.weather.data.local.entity.LocalCity
 import ru.orlovegor.weather.data.repositorises.WeatherRepository
 import ru.orlovegor.weather.presentation.models.WeatherPerHour
-import ru.orlovegor.weather.utils.ResultWrapper
+import ru.orlovegor.weather.utils.UIState
 import ru.orlovegor.weather.utils.dateToDateString
 import java.util.*
 import javax.inject.Inject
@@ -28,6 +28,7 @@ class WeatherViewModel @Inject constructor(
         private val _weather = MutableStateFlow(listOf<WeatherPerHour>())
         private val _isProgress = MutableStateFlow(false)
         private val _toast = MutableSharedFlow<Int>()
+
         val weather = _weather.asStateFlow()
         val isProgress = _isProgress.asStateFlow()
         val toast = _toast.asSharedFlow()
@@ -42,25 +43,26 @@ class WeatherViewModel @Inject constructor(
         private fun load() {
                 _city.onEach { tittleCity ->
                         _isProgress.value = true
-                        when (val data = weatherRepository.fetchWeatherByCity(tittleCity)) {
-                                is ResultWrapper.Success -> {
-                                        _weather.emit(data.value)
-                                        weatherRepository.saveDataStrategy(
-                                                city = LocalCity(cityId, tittleCity, getCurrentDate()),
-                                                weathersPerHour = data.value
-                                        )
-                                }
-                                is ResultWrapper.NetworkError -> {
-                                        _weather.value = weatherRepository.loadDataStrategy(
-                                                        cityId,
-                                                        getCurrentDate()
-                                                )
-                                        _toast.emit(R.string.network_error)
-                                }
-                                is ResultWrapper.Error -> {
+
+                        when (val result =
+                                weatherRepository.getOperation(cityId,tittleCity,getCurrentDate())) {
+
+                                is UIState.Error -> {
                                         _toast.emit(R.string.error)
                                 }
+                                is UIState.NetworkError -> {
+                                        if (result.data.isNullOrEmpty()) {
+                                                _toast.emit(R.string.network_error)
+                                        } else {
+                                                _toast.emit(R.string.network_error_load)
+                                                _weather.value = result.data
+                                        }
+                                }
+                                is UIState.Success -> {
+                                        _weather.value = result.data
+                                }
                         }
+
                 }
                         .onEach { _isProgress.value = false }
                         .launchIn(viewModelScope)

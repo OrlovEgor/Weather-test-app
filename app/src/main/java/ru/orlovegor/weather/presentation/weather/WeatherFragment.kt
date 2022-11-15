@@ -33,6 +33,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
     }
 
     private fun observeViewModelState() {
+
         lifecycleScope.launchWhenStarted {
             viewModel.weather.collectLatest { weatherPerHour ->
                 weatherAdapter.submitList(weatherPerHour)
