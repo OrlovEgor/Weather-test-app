@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 import ru.orlovegor.weather.R
 import ru.orlovegor.weather.databinding.FragmentWeatherBinding
 import ru.orlovegor.weather.utils.ItemOffsetDecoration
+import ru.orlovegor.weather.utils.UIState
 import ru.orlovegor.weather.utils.makeToast
 
 @AndroidEntryPoint
@@ -34,10 +35,30 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
 
     private fun observeViewModelState() {
         lifecycleScope.launchWhenStarted {
+            viewModel.uiWeather.collectLatest { state ->
+                when (state) {
+                    is UIState.Error -> {
+                        makeToast(requireContext(), R.string.error)
+                    }
+                    is UIState.NetworkError -> {
+                        if (state.data.isNullOrEmpty()) {
+                            makeToast(requireContext(), R.string.network_error)
+                        } else {
+                            makeToast(requireContext(), R.string.network_error_load)
+                            weatherAdapter.submitList(state.data)
+                        }
+                    }
+                    is UIState.Success -> {
+                        weatherAdapter.submitList(state.data)
+                    }
+                }
+            }
+        }
+        /*lifecycleScope.launchWhenStarted {
             viewModel.weather.collectLatest { weatherPerHour ->
                 weatherAdapter.submitList(weatherPerHour)
             }
-        }
+        }*/
         lifecycleScope.launchWhenStarted {
             viewModel.isProgress.collectLatest { isProgress ->
                 binding.weatherProgress.isVisible = isProgress

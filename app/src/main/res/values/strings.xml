@@ -12,7 +12,8 @@
     <string name="Ufa">Уфа</string>
     <string name="Tula">Тула</string>
     <string name="Anapa">Анапа</string>
-    <string name="network_error">Ошибка подключения к сети.</string>
+    <string name="network_error">Ошибка подключения ,Загруженных жанных нет.</string>
+    <string name="network_error_load">Ошибка подключения,Показаны загруженные данные.</string>
     <string name="error">Неизвестная ошибка.</string>
     <string name="textview">TextView</string>
     <string name="weather_today">Погода cегодня</string>

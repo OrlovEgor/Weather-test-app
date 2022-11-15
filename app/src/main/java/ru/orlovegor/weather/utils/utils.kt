@@ -17,6 +17,18 @@ fun ForecastHour.mapToWeatherPerHour() =
         iconCode = this.condition.code
     )
 
+fun ForecastHour.mapToLocalWeatherPerHour(cityId: Long, weatherPerHourId: Long) =
+    LocalWeatherPerHour(
+        weatherPerHourId = weatherPerHourId,
+        parentCityId = cityId,
+        time = this.time,
+        temperature = this.temperature,
+        isDay = this.isDay != 0,
+        iconCode = this.condition.code
+    )
+
+
+
 fun LocalWeatherPerHour.mapToWeatherPerHour() =
     WeatherPerHour(
         time = this.time,

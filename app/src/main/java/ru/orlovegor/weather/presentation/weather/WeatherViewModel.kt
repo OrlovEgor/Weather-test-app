@@ -9,8 +9,10 @@ import kotlinx.coroutines.launch
 import ru.orlovegor.weather.R
 import ru.orlovegor.weather.data.local.entity.LocalCity
 import ru.orlovegor.weather.data.repositorises.WeatherRepository
+import ru.orlovegor.weather.data.repositorises.WeatherRepositoryImpl
 import ru.orlovegor.weather.presentation.models.WeatherPerHour
 import ru.orlovegor.weather.utils.ResultWrapper
+import ru.orlovegor.weather.utils.UIState
 import ru.orlovegor.weather.utils.dateToDateString
 import java.util.*
 import javax.inject.Inject
@@ -26,17 +28,29 @@ class WeatherViewModel @Inject constructor(
 
         private val _city = MutableSharedFlow<String>()
         private val _weather = MutableStateFlow(listOf<WeatherPerHour>())
+        private val _uiWeather = MutableSharedFlow<UIState<List<WeatherPerHour>>>()
         private val _isProgress = MutableStateFlow(false)
         private val _toast = MutableSharedFlow<Int>()
+        val uiWeather = _uiWeather.asSharedFlow()
         val weather = _weather.asStateFlow()
         val isProgress = _isProgress.asStateFlow()
         val toast = _toast.asSharedFlow()
 
         init {
-                load()
+                load2()
                 viewModelScope.launch {
                         stateNavArgs.get<String>(NAV_ARG_KEY_CITY)?.let { _city.emit(it) }
                 }
+        }
+
+        private fun load2(){
+                _city.onEach {
+                        tittleCity ->
+                        _isProgress.value = true
+                        _uiWeather.emit(weatherRepository.getOperation( LocalCity(cityId, tittleCity, getCurrentDate())))
+                }
+                        .onEach { _isProgress.value = false }
+                        .launchIn(viewModelScope)
         }
 
         private fun load() {
